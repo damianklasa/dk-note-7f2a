@@ -1,0 +1,192 @@
+<title>Krok trzeci</title>
+<style>
+  :root {
+    --paper: #f2ede2;
+    --ink: #232922;
+    --muted: #6f6a5a;
+    --accent: #6b5a3e;
+    --seal: #8a7550;
+    --line: rgba(35, 41, 34, 0.14);
+    --input-bg: #ffffff;
+    --error: #9a4b3d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #181b16;
+      --ink: #e9e4d6;
+      --muted: #a49d88;
+      --accent: #c9a86a;
+      --seal: #c9a86a;
+      --line: rgba(233, 228, 214, 0.16);
+      --input-bg: #21251d;
+      --error: #d98b7a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #181b16;
+    --ink: #e9e4d6;
+    --muted: #a49d88;
+    --accent: #c9a86a;
+    --seal: #c9a86a;
+    --line: rgba(233, 228, 214, 0.16);
+    --input-bg: #21251d;
+    --error: #d98b7a;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    padding: 1.5rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 26rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .eyebrow {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+
+  .rule {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .note {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 32ch;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+    max-width: 18rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--line);
+    background: var(--input-bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  button {
+    padding: 0.6rem 1.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+  button:hover { background: var(--accent); color: var(--paper); }
+
+  .error {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    color: var(--error);
+    min-height: 1.2em;
+  }
+
+  #riddle { display: none; }
+  #riddle.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: reveal 0.5s ease;
+  }
+  #gate.hide { display: none; }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #riddle.show { animation: none; }
+  }
+</style>
+
+<div class="card">
+  <div id="gate">
+    <span class="eyebrow">Krok 3</span>
+    <div class="rule" style="margin: 1rem 0;"></div>
+    <p class="note" style="max-width: 34ch; margin-bottom: 1rem;">Jaką liczbę znalazłaś w spisie treści?</p>
+    <form id="gateForm">
+      <input id="answer" type="text" inputmode="numeric" autocomplete="off" placeholder="wpisz liczbę" />
+      <button type="submit">Sprawdź</button>
+      <div class="error" id="err"></div>
+    </form>
+  </div>
+
+  <div id="riddle">
+    <span class="eyebrow">Krok 3</span>
+    <h1>Obok mnie flakony perfum pachną ładniej niż ja, a w miseczce błyszczy biżuteria, która co jakiś czas zmienia miejsce, kiedy komuś zamarzy się porządek. Ja się nie ruszam — jestem twarda i pomarańczowa.</h1>
+  </div>
+</div>
+
+<script>
+  // TODO(Damian): podmień na prawdziwy numer strony ze spisu treści Hawkinga,
+  // gdy sprawdzisz swój egzemplarz. Do tego czasu bramka przyjmuje dowolną liczbę.
+  var EXPECTED = null;
+
+  document.getElementById("gateForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var raw = document.getElementById("answer").value.trim();
+    var isNumeric = /^\d+$/.test(raw);
+    var ok = EXPECTED === null ? isNumeric : raw === String(EXPECTED);
+    if (ok) {
+      document.getElementById("gate").classList.add("hide");
+      document.getElementById("riddle").classList.add("show");
+    } else {
+      document.getElementById("err").textContent = "To nie to. Spróbuj jeszcze raz.";
+    }
+  });
+</script>
