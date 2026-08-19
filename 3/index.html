@@ -172,7 +172,7 @@
   <div id="gate">
     <span class="eyebrow">Krok 3</span>
     <div class="rule"></div>
-    <p class="note">Jaką liczbę znalazłaś w spisie treści?</p>
+    <p class="note">Ile lat miał autor tej książki, gdy zmarł?</p>
     <form id="gateForm">
       <input id="answer" type="text" inputmode="numeric" autocomplete="off" placeholder="wpisz liczbę" />
       <button type="submit">Sprawdź</button>
@@ -187,9 +187,7 @@
 </div>
 
 <script>
-  // TODO(Damian): podmień na prawdziwy numer strony ze spisu treści Hawkinga,
-  // gdy sprawdzisz swój egzemplarz. Do tego czasu bramka przyjmuje dowolną liczbę.
-  var EXPECTED = null;
+  var EXPECTED = 76; // wiek Stephena Hawkinga w chwili śmierci
 
   document.getElementById("gateForm").addEventListener("submit", function (e) {
     e.preventDefault();
