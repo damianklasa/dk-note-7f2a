@@ -142,6 +142,12 @@
     gap: 1.5rem;
     animation: reveal 0.5s ease;
   }
+  #gate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
   #gate.hide { display: none; }
 
   @keyframes reveal {
@@ -156,8 +162,8 @@
 <div class="card">
   <div id="gate">
     <span class="eyebrow">Krok 2</span>
-    <div class="rule" style="margin: 1rem 0;"></div>
-    <p class="note" style="max-width: 34ch; margin-bottom: 1rem;">Jakie słowo napisano przy nim, mówiące, że jest niegrzeczny?</p>
+    <div class="rule"></div>
+    <p class="note" style="max-width: 34ch;">Jakie słowo napisano przy nim, mówiące, że jest niegrzeczny?</p>
     <form id="gateForm">
       <input id="answer" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="wpisz słowo" />
       <button type="submit">Sprawdź</button>
@@ -167,7 +173,7 @@
 
   <div id="riddle">
     <span class="eyebrow">Krok 2</span>
-    <h1>Świat słyszał go tylko dzięki maszynie mówiącej za niego. A jednak w tej książce sam ostrzega przed maszyną, która pewnego dnia może przewyższyć nas wszystkich. Znajdź to pytanie w spisie treści — numer strony to Twoja kolejna wskazówka.</h1>
+    <h1>Gdybyś mogła poznać całą swoją przyszłość, zanim się wydarzy — czy chciałabyś to zrobić? Autor jednej z Twoich książek zadał sobie dokładnie to samo pytanie. Znajdź je w jego spisie treści — numer strony to Twoja kolejna wskazówka.</h1>
   </div>
 </div>
 
