@@ -202,7 +202,9 @@
       <div class="error" id="err"></div>
     </form>
     <button type="button" class="hint-toggle" id="hintToggle">Podpowiedź, jeśli nie wiesz</button>
-    <p class="hint-text" id="hintText">Blisko ukrytej litewskiej bramy, ulicami legend, budzę uśpiony labirynt.</p>
+    <p class="hint-text" id="hintText">Blisko ukrytej lokalnej bramy, ulicami legend, budzę uśpiony labirynt.</p>
+    <button type="button" class="hint-toggle" id="hintToggle2" style="display: none;">Dalej nie wiesz?</button>
+    <p class="hint-text" id="hintText2">Przeczytaj pierwsze litery każdego słowa.</p>
   </div>
 
   <div id="riddle">
@@ -232,7 +234,13 @@
     }
   });
   document.getElementById("hintToggle").addEventListener("click", function () {
-    document.getElementById("hintText").classList.toggle("show");
+    document.getElementById("hintText").classList.add("show");
+    document.getElementById("hintToggle").style.display = "none";
+    document.getElementById("hintToggle2").style.display = "inline-block";
+  });
+  document.getElementById("hintToggle2").addEventListener("click", function () {
+    document.getElementById("hintText2").classList.add("show");
+    document.getElementById("hintToggle2").style.display = "none";
   });
 </script>
 </body>
