@@ -86,7 +86,7 @@
     font-size: clamp(1.25rem, 5.5vw, 1.45rem);
     line-height: 1.6;
     color: var(--muted);
-    max-width: 32ch;
+    max-width: min(30ch, 85vw);
   }
 
   form {
@@ -164,7 +164,7 @@
   <div id="gate">
     <span class="eyebrow">Krok 4</span>
     <div class="rule"></div>
-    <p class="note" style="max-width: 34ch;">Ile kilogramów waży to, co trzymasz w ręku?</p>
+    <p class="note">Ile kilogramów waży to, co trzymasz w ręku?</p>
     <form id="gateForm">
       <input id="answer" type="text" inputmode="numeric" autocomplete="off" placeholder="wpisz liczbę" />
       <button type="submit">Sprawdź</button>
