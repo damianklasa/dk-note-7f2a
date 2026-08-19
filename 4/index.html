@@ -172,7 +172,7 @@
   <div id="gate">
     <span class="eyebrow">Krok 4</span>
     <div class="rule"></div>
-    <p class="note">On tego lata pokonał dystans Ironmana, a potem wspiął się na Mont Blanc. Ja jestem czymś dużo mniejszym — a mimo to, kiedy mnie unosisz, czasem traktujesz mnie, jakbym była cięższa niż jedno i drugie razem wzięte. Ile ważę?</p>
+    <p class="note">Codziennie w południe z Hawru wypływa statek do Nowego Jorku, a z Nowego Jorku do Hawru wypływa inny. Podróż trwa dokładnie 7 dni i 7 nocy. Ile statków płynących w drugą stronę spotka na swojej trasie statek, który dziś wypływa z Hawru?</p>
     <form id="gateForm">
       <input id="answer" type="text" inputmode="numeric" autocomplete="off" placeholder="wpisz liczbę" />
       <button type="submit">Sprawdź</button>
@@ -187,7 +187,7 @@
 </div>
 
 <script>
-  var EXPECTED = "3";
+  var EXPECTED = "15"; // klasyczna zagadka statków Lucasa
   document.getElementById("gateForm").addEventListener("submit", function (e) {
     e.preventDefault();
     var val = document.getElementById("answer").value.replace(/\D/g, "");
