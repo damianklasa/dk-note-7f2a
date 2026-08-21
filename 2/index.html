@@ -249,6 +249,55 @@
     min-height: 1.2em;
   }
 
+  .hint-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 1.25rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .hint-toggle:hover { color: var(--accent); }
+  .hint-text {
+    display: none;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 32ch;
+    margin: 0.75rem auto 0;
+    line-height: 1.6;
+  }
+  .hint-text.show { display: block; }
+
+  #catsLayer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 999;
+  }
+  .cat {
+    position: absolute;
+    bottom: -3rem;
+    font-size: 2.2rem;
+    animation: catHop 2.6s ease-in forwards;
+    opacity: 0;
+  }
+  @keyframes catHop {
+    0% { opacity: 0; transform: translateY(0) scale(0.8); }
+    10% { opacity: 1; }
+    35% { transform: translateY(-45vh) scale(1) rotate(-8deg); }
+    55% { transform: translateY(-55vh) scale(1) rotate(6deg); }
+    80% { transform: translateY(-95vh) scale(1) rotate(-4deg); }
+    100% { opacity: 0; transform: translateY(-115vh) scale(0.9) rotate(3deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat { animation: none; opacity: 1; bottom: 40vh; }
+  }
+
   #finalRiddle { display: none; }
   #finalRiddle.show {
     display: block;
@@ -344,12 +393,12 @@
         </div>
         <div class="evidence-card" data-idx="4">
           <div class="evidence-head"><span class="evidence-num">Dowód 4</span></div>
-          <p class="evidence-text">Ochroniarz nocnej zmiany zeznał, że widział Weronikę Fal kłócącą się z profesorem na korytarzu tuż przed 22:00 — choć oboje później zaprzeczyli, jakoby się tego wieczoru widzieli.</p>
+          <p class="evidence-text">Ochroniarz nocnej zmiany zeznał, że widział Weronikę Fal kłócącą się z profesorem na korytarzu tuż przed 22:00 — choć oboje później zaprzeczyli, jakoby się tego wieczoru widzieli. Zaraz potem Weronika udała się do swojego pokoju gościnnego na dole zbocza, gdzie do drugiej w nocy grała w brydża z trójką innych gości — co zgodnie potwierdzają wszyscy troje.</p>
           <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
         </div>
         <div class="evidence-card" data-idx="5">
           <div class="evidence-head"><span class="evidence-num">Dowód 5</span></div>
-          <p class="evidence-text">Bruno Ash podczas przesłuchania nerwowo unikał pytań o współautorstwo w nadchodzącej publikacji profesora.</p>
+          <p class="evidence-text">Bruno Ash podczas przesłuchania nerwowo unikał pytań o współautorstwo w nadchodzącej publikacji profesora — jak się później okazało, obawiał się jedynie, że jego prywatne notatki na ten temat wyjdą na jaw i ośmieszą go przed środowiskiem, zanim zdąży je dopracować. Nie miało to żadnego związku z nocą zniknięcia profesora.</p>
           <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
         </div>
         <div class="evidence-card" data-idx="6">
@@ -396,8 +445,12 @@
         <button type="submit">Oskarż</button>
         <div class="error" id="verdictErr"></div>
       </form>
+      <button type="button" class="hint-toggle" id="hintToggle">Podpowiedź, jeśli nie wiesz</button>
+      <p class="hint-text" id="hintText">Zastanów się, kto w tej sprawie ma jednocześnie dostęp do kamer, zamków i sprzętu konserwacyjnego — nie tylko motyw.</p>
     </section>
   </div>
+
+  <div id="catsLayer" aria-hidden="true"></div>
 
   <div id="finalRiddle">
     <span class="section-label">Rozwiązane</span>
@@ -454,16 +507,50 @@
       .trim();
   }
   var ACCEPTED = ["irena dorm", "irena", "dorm", "kustoszka"];
+  var attemptsLeft = 3;
+
+  function spawnCats() {
+    var layer = document.getElementById("catsLayer");
+    var emojis = ["🐱", "🐈", "🐈‍⬛"];
+    var count = 14;
+    for (var i = 0; i < count; i++) {
+      (function (i) {
+        var cat = document.createElement("span");
+        cat.className = "cat";
+        cat.textContent = emojis[i % emojis.length];
+        cat.style.left = (Math.random() * 90) + "%";
+        cat.style.animationDelay = (Math.random() * 1.2) + "s";
+        layer.appendChild(cat);
+        setTimeout(function () { cat.remove(); }, 4200);
+      })(i);
+    }
+  }
+
   document.getElementById("verdictForm").addEventListener("submit", function (e) {
     e.preventDefault();
     var val = norm(document.getElementById("verdictAnswer").value);
     if (ACCEPTED.indexOf(val) !== -1) {
+      spawnCats();
       document.getElementById("caseBody").classList.add("solved");
       document.getElementById("finalRiddle").classList.add("show");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      document.getElementById("verdictErr").textContent = "To nie ta osoba. Przeanalizuj dowody jeszcze raz.";
+      attemptsLeft--;
+      if (attemptsLeft > 0) {
+        var word = attemptsLeft === 1 ? "szansę" : "szanse";
+        document.getElementById("verdictErr").textContent =
+          "To nie ta osoba. Masz jeszcze " + attemptsLeft + " " + word + ".";
+      } else {
+        document.getElementById("verdictErr").textContent =
+          "To nie ta osoba. Skorzystaj z podpowiedzi poniżej.";
+        document.getElementById("hintText").classList.add("show");
+        document.getElementById("hintToggle").style.display = "none";
+      }
     }
+  });
+
+  document.getElementById("hintToggle").addEventListener("click", function () {
+    document.getElementById("hintText").classList.toggle("show");
   });
 </script>
 </body>
