@@ -506,22 +506,22 @@
       .replace(/[̀-ͯ]/g, "")
       .trim();
   }
-  var ACCEPTED = ["irena dorm", "irena", "dorm", "kustoszka"];
+  var ACCEPTED = ["irena dorm", "irena"];
   var attemptsLeft = 3;
 
   function spawnCats() {
     var layer = document.getElementById("catsLayer");
     var emojis = ["🐱", "🐈", "🐈‍⬛"];
-    var count = 14;
+    var count = 40;
     for (var i = 0; i < count; i++) {
       (function (i) {
         var cat = document.createElement("span");
         cat.className = "cat";
         cat.textContent = emojis[i % emojis.length];
         cat.style.left = (Math.random() * 90) + "%";
-        cat.style.animationDelay = (Math.random() * 1.2) + "s";
+        cat.style.animationDelay = (Math.random() * 1.8) + "s";
         layer.appendChild(cat);
-        setTimeout(function () { cat.remove(); }, 4200);
+        setTimeout(function () { cat.remove(); }, 4800);
       })(i);
     }
   }
