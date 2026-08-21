@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Krok drugi</title>
-
+<title>Zniknięcie z Wieży Obserwatorium</title>
 <style>
   :root {
     --paper: #f2ede2;
@@ -15,177 +14,443 @@
     --line: rgba(35, 41, 34, 0.14);
     --input-bg: #ffffff;
     --error: #9a4b3d;
+    --card-bg: rgba(35, 41, 34, 0.03);
+    --tag-bg: rgba(107, 90, 62, 0.12);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #181b16;
+      --paper: #14170f;
       --ink: #e9e4d6;
       --muted: #a49d88;
       --accent: #c9a86a;
       --seal: #c9a86a;
-      --line: rgba(233, 228, 214, 0.16);
-      --input-bg: #21251d;
+      --line: rgba(233, 228, 214, 0.14);
+      --input-bg: #1e2216;
       --error: #d98b7a;
+      --card-bg: rgba(233, 228, 214, 0.04);
+      --tag-bg: rgba(201, 168, 106, 0.14);
     }
   }
   :root[data-theme="dark"] {
-    --paper: #181b16;
+    --paper: #14170f;
     --ink: #e9e4d6;
     --muted: #a49d88;
     --accent: #c9a86a;
     --seal: #c9a86a;
-    --line: rgba(233, 228, 214, 0.16);
-    --input-bg: #21251d;
+    --line: rgba(233, 228, 214, 0.14);
+    --input-bg: #1e2216;
     --error: #d98b7a;
+    --card-bg: rgba(233, 228, 214, 0.04);
+    --tag-bg: rgba(201, 168, 106, 0.14);
   }
 
   * { box-sizing: border-box; }
-
+  html, body { margin: 0; padding: 0; }
   body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: var(--paper);
     color: var(--ink);
     font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
-    padding: 1.5rem;
     -webkit-font-smoothing: antialiased;
+    padding: 1.5rem 1.25rem 4rem;
   }
 
-  .card {
-    width: 100%;
-    max-width: 26rem;
-    text-align: center;
+  .wrap { max-width: 38rem; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 2.5rem; }
+  .tags {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--tag-bg);
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+  }
+  h1 {
+    font-size: clamp(1.6rem, 6vw, 2.1rem);
+    font-weight: 400;
+    line-height: 1.3;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .rule {
+    width: 3rem;
+    height: 1px;
+    background: var(--line);
+    margin: 1.5rem auto;
   }
 
-  .eyebrow {
+  section { margin-bottom: 3rem; }
+  .section-label {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 1rem;
+    font-size: 0.75rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent);
+    margin-bottom: 1rem;
+    display: block;
   }
 
-  h1 {
-    margin: 0;
-    font-size: clamp(1.9rem, 8vw, 2.3rem);
-    font-weight: 400;
-    line-height: 1.5;
-    text-wrap: balance;
+  .story p {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin: 0 0 1.25rem;
   }
+  .story p:last-child { margin-bottom: 0; }
 
-  .rule {
-    width: 2.5rem;
-    height: 1px;
-    background: var(--line);
+  .suspects {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
-
-  .note {
-    margin: 0;
+  @media (min-width: 34rem) {
+    .suspects { grid-template-columns: 1fr 1fr; }
+  }
+  .suspect {
+    border: 1px solid var(--line);
+    background: var(--card-bg);
+    border-radius: 0.6rem;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .suspect:hover { border-color: var(--accent); }
+  .suspect-name {
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+  }
+  .suspect-role {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: clamp(1.25rem, 5.5vw, 1.45rem);
-    line-height: 1.6;
+    font-size: 0.85rem;
     color: var(--muted);
-    max-width: min(34ch, 100%);
-    overflow-wrap: break-word;
+  }
+  .suspect-status {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.6rem;
+    display: inline-block;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+  }
+  .suspect.marked-suspect .suspect-status { color: var(--error); border-color: var(--error); }
+  .suspect.marked-cleared .suspect-status { color: var(--muted); border-color: var(--line); text-decoration: line-through; }
+
+  .evidence-list { display: flex; flex-direction: column; gap: 0.85rem; }
+  .evidence-card {
+    border: 1px solid var(--line);
+    background: var(--card-bg);
+    border-radius: 0.6rem;
+    padding: 1rem 1.1rem;
+    display: none;
+  }
+  .evidence-card.show { display: block; animation: reveal 0.5s ease; }
+  .evidence-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .evidence-id {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .evidence-type {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--tag-bg);
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+  }
+  .evidence-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .evidence-link {
+    margin-top: 0.7rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .evidence-link select {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--input-bg);
+    border: 1px solid var(--line);
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.5rem;
   }
 
+  .reveal-btn-wrap { text-align: center; margin-top: 1.25rem; }
+
+  button {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+  }
+  button:hover { background: var(--accent); color: var(--paper); }
+  button:disabled { opacity: 0.35; cursor: default; }
+  button:disabled:hover { background: transparent; color: var(--accent); }
+
+  .verdict {
+    text-align: center;
+  }
+  .verdict p.lead {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
-    width: 100%;
   }
-
   input {
     width: 100%;
-    max-width: 18rem;
+    max-width: 20rem;
     padding: 0.7rem 1rem;
     border-radius: 0.5rem;
     border: 1px solid var(--line);
     background: var(--input-bg);
     color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     text-align: center;
   }
-  input:focus {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  button {
-    padding: 0.6rem 1.6rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--accent);
-    background: transparent;
-    color: var(--accent);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-  }
-  button:hover { background: var(--accent); color: var(--paper); }
-
+  input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
   .error {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--error);
     min-height: 1.2em;
   }
 
-  #riddle { display: none; }
-  #riddle.show {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    animation: reveal 0.5s ease;
+  #finalRiddle { display: none; }
+  #finalRiddle.show {
+    display: block;
+    animation: reveal 0.6s ease;
+    text-align: center;
   }
-  #gate {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
+  #finalRiddle h2 {
+    font-size: clamp(1.4rem, 5.5vw, 1.7rem);
+    font-weight: 400;
+    line-height: 1.55;
+    text-wrap: balance;
   }
-  #gate.hide { display: none; }
+  #caseBody.solved { display: none; }
 
   @keyframes reveal {
-    from { opacity: 0; transform: translateY(6px); }
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
   @media (prefers-reduced-motion: reduce) {
-    #riddle.show { animation: none; }
+    .evidence-card.show, #finalRiddle.show { animation: none; }
   }
 </style>
 </head>
 <body>
-<div class="card">
-  <div id="gate">
-    <span class="eyebrow">Krok 2</span>
-    <div class="rule"></div>
-    <p class="note">Masz w domu półkę, na której stoi coś słodkiego, co czasem odrobinę za bardzo lubi się kleić do wszystkiego dookoła. Jak nazywa się ta kleista rzecz?</p>
-    <form id="gateForm">
-      <input id="answer" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="wpisz słowo" />
-      <button type="submit">Sprawdź</button>
-      <div class="error" id="err"></div>
-    </form>
+<div class="wrap">
+
+  <div id="caseBody">
+    <header>
+      <div class="tags"><span class="tag">Trudna</span><span class="tag">Tajemnica</span></div>
+      <h1>Zniknięcie z Wieży Obserwatorium</h1>
+      <div class="rule"></div>
+    </header>
+
+    <section class="story">
+      <span class="section-label">Treść zagadki</span>
+      <p>Obserwatorium na szczycie Mgławicowej Grani, odosobniona placówka badawcza dostępna jedynie jedną, wąską drogą wijącą się przez skalny grzbiet, od dekady uchodziło za miejsce, gdzie rodzą się najważniejsze odkrycia współczesnej astrofizyki. Tej nocy, podczas rzadkiego zjawiska koniunkcji trzech planet widocznego raz na kilkadziesiąt lat, w wieży obserwacyjnej przebywał profesor Edward Thorn — genialny, lecz bezwzględny naukowiec, znany z licznych, często zaciekłych sporów akademickich oraz z tego, że nikomu nie ufał na tyle, by dzielić się wynikami swoich badań przed publikacją.</p>
+      <p>Dr Weronika Fal, jego wieloletnia rywalka, od lat rywalizowała z Thornem o ten sam grant badawczy przyznawany raz na pięć lat — i od miesięcy krążyły plotki, że tegoroczna decyzja miała zapaść lada dzień, a wyniki Thorna mogły przechylić szalę bezpowrotnie na jego korzyść.</p>
+      <p>Bruno Ash, młody i ambitny asystent profesora, spędził ostatnie dwa lata pracując w cieniu Thorna nad danymi, które — jak podejrzewał — nigdy nie zostaną podpisane jego nazwiskiem. Współpracownicy zauważali w nim narastającą gorycz, choć nigdy otwarcie jej nie wyrażał.</p>
+      <p>Karol Vetter, główny sponsor obserwatorium, formalnie wspierał badania Thorna z czystej pasji do nauki — w rzeczywistości od miesięcy w tajemnicy negocjował z prywatnym kolekcjonerem sprzedaż praw do niepublikowanych wyników, licząc, że Thorn nigdy się o tym nie dowie.</p>
+      <p>Irena Dorm, kustoszka odpowiedzialna za bezpieczeństwo i konserwację obiektu, zarządzała każdym zamkiem, każdą kamerą i każdym systemem w budynku od dziesięciu lat — cicha, systematyczna, nieprzyzwyczajona do tego, by ktokolwiek kwestionował jej kompetencje, aż do czasu, gdy fundacja finansująca obserwatorium zaczęła rozważać "modernizację" struktury zarządzania.</p>
+      <p>Sasza Reyn, tajemnicza gościni przedstawiająca się fałszywym nazwiskiem, towarzyszyła grupie tego wieczoru oficjalnie jako "entuzjastka astronomii" — w rzeczywistości ukrywając zupełnie inny cel swojej obecności.</p>
+      <p>Gdy zegar wybił północ, a niebo nad wieżą jarzyło się rzadkim blaskiem koniunkcji, Bruno Ash, zaniepokojony przedłużającą się ciszą, zapukał do gabinetu profesora na szczycie wieży. Odpowiedziała mu cisza. Drzwi, zamknięte od wewnątrz, otworzył dopiero za pomocą awaryjnego kodu — za nimi zastał puste, nietknięte pomieszczenie: otwarty sejf, uchylone okno prowadzące na zewnętrzną platformę kopuły, i profesora nigdzie w zasięgu wzroku. Jego ciało odnaleziono nad ranem u podnóża skalnego zbocza.</p>
+      <p>Wieża obserwacyjna, technologicznie zaawansowana twierdza pełna czujników i zamków elektronicznych, miała opinię obiektu, do którego nie sposób się włamać bez pozostawienia cyfrowego śladu. A jednak tej nocy ktoś to zrobił — i zniknął równie bezszelestnie, jak się pojawił.</p>
+    </section>
+
+    <section>
+      <span class="section-label">Podejrzani (kliknij, by oznaczyć swoją teorię)</span>
+      <div class="suspects" id="suspects">
+        <div class="suspect" data-name="Weronika Fal">
+          <div class="suspect-name">Dr Weronika Fal</div>
+          <div class="suspect-role">Rywalizująca astrofizyczka</div>
+          <span class="suspect-status">Brak oceny</span>
+        </div>
+        <div class="suspect" data-name="Bruno Ash">
+          <div class="suspect-name">Bruno Ash</div>
+          <div class="suspect-role">Asystent profesora</div>
+          <span class="suspect-status">Brak oceny</span>
+        </div>
+        <div class="suspect" data-name="Karol Vetter">
+          <div class="suspect-name">Karol Vetter</div>
+          <div class="suspect-role">Główny sponsor obserwatorium</div>
+          <span class="suspect-status">Brak oceny</span>
+        </div>
+        <div class="suspect" data-name="Irena Dorm">
+          <div class="suspect-name">Irena Dorm</div>
+          <div class="suspect-role">Kustoszka ds. bezpieczeństwa obiektu</div>
+          <span class="suspect-status">Brak oceny</span>
+        </div>
+        <div class="suspect" data-name="Sasza Reyn">
+          <div class="suspect-name">Sasza Reyn</div>
+          <div class="suspect-role">Tajemnicza gościni</div>
+          <span class="suspect-status">Brak oceny</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <span class="section-label">Poszlaki (<span id="evCount">0</span>/12 odsłoniętych)</span>
+      <div class="evidence-list" id="evidenceList">
+        <div class="evidence-card" data-idx="1">
+          <div class="evidence-head"><span class="evidence-id">C01</span><span class="evidence-type">physical</span></div>
+          <p class="evidence-text">Na framudze okna w gabinecie znaleziono świeże ślady smaru identycznego z tym używanym wyłącznie do konserwacji mechanizmu zamykającego kopułę teleskopu.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="2">
+          <div class="evidence-head"><span class="evidence-id">C02</span><span class="evidence-type">security</span></div>
+          <p class="evidence-text">Rejestr systemu zamków pokazuje, że drzwi gabinetu otworzono zdalnym poleceniem override o 23:52 — dwie minuty przed tym, jak Bruno zauważył zniknięcie profesora.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="3">
+          <div class="evidence-head"><span class="evidence-id">C03</span><span class="evidence-type">document</span></div>
+          <p class="evidence-text">W szufladzie biurka Karola Vettera znaleziono wstępnie podpisany kontrakt sprzedaży "niepublikowanych wyników badań" prywatnemu nabywcy za siedmiocyfrową kwotę.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="4">
+          <div class="evidence-head"><span class="evidence-id">C04</span><span class="evidence-type">witness</span></div>
+          <p class="evidence-text">Ochroniarz nocnej zmiany zeznał, że widział Weronikę Fal kłócącą się z profesorem na korytarzu tuż przed 22:00 — choć oboje później zaprzeczyli, jakoby się tego wieczoru widzieli.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="5">
+          <div class="evidence-head"><span class="evidence-id">C05</span><span class="evidence-type">behavior</span></div>
+          <p class="evidence-text">Bruno Ash podczas przesłuchania nerwowo unikał pytań o współautorstwo w nadchodzącej publikacji profesora.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="6">
+          <div class="evidence-head"><span class="evidence-id">C06</span><span class="evidence-type">financial</span></div>
+          <p class="evidence-text">Tydzień wcześniej fundacja finansująca obserwatorium rozpoczęła rozmowy o "modernizacji zarządzania obiektem", co realnie oznaczało zastąpienie dotychczasowej kustoszki nowym, młodszym personelem.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="7">
+          <div class="evidence-head"><span class="evidence-id">C07</span><span class="evidence-type">red herring</span></div>
+          <p class="evidence-text">Sasza Reyn okazała się dziennikarką śledczą przygotowującą artykuł o niejasnych źródłach finansowania obserwatorium — bez żadnego interesu w samym profesorze czy jego badaniach.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="8">
+          <div class="evidence-head"><span class="evidence-id">C08</span><span class="evidence-type">timeline</span></div>
+          <p class="evidence-text">Harmonogram nocnej wachty i zapisy z recepcji pozwalają precyzyjnie odtworzyć, kto przebywał w pobliżu wieży w krytycznym oknie czasowym między 23:30 a 00:15.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="9">
+          <div class="evidence-head"><span class="evidence-id">C09</span><span class="evidence-type">coincidence</span></div>
+          <p class="evidence-text">Karol Vetter przez większość wieczoru przebywał w sali konferencyjnej na dole, omawiając warunki umowy z prawnikiem — potwierdza to nagranie z tamtejszej kamery.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="10">
+          <div class="evidence-head"><span class="evidence-id">C10</span><span class="evidence-type">forensic</span></div>
+          <p class="evidence-text">Na nadgarstkach profesora znaleziono ślad cienkiej linki zaciskowej, standardowo używanej do mocowania sprzętu obserwacyjnego na zewnętrznej platformie kopuły.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="11">
+          <div class="evidence-head"><span class="evidence-id">C11</span><span class="evidence-type">digital</span></div>
+          <p class="evidence-text">Log systemu bezpieczeństwa ujawnia, że kamera przy wejściu do gabinetu została wyłączona "na czas serwisu" dokładnie o 23:50 — dwie minuty przed użyciem zdalnego override na drzwiach.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+        <div class="evidence-card" data-idx="12">
+          <div class="evidence-head"><span class="evidence-id">C12</span><span class="evidence-type">security</span></div>
+          <p class="evidence-text">Tylko jedna osoba w całym obiekcie miała uprawnienia, by z tego samego panelu wydać polecenie override na zamku ORAZ wyłączyć kamerę.</p>
+          <div class="evidence-link"><select><option>Powiąż z podejrzanym…</option><option>Weronika Fal</option><option>Bruno Ash</option><option>Karol Vetter</option><option>Irena Dorm</option><option>Sasza Reyn</option></select></div>
+        </div>
+      </div>
+      <div class="reveal-btn-wrap">
+        <button type="button" id="revealBtn">Przejrzyj kolejny dowód</button>
+      </div>
+    </section>
+
+    <section class="verdict">
+      <span class="section-label">Werdykt</span>
+      <p class="lead">Kto stoi za zniknięciem profesora Thorna?</p>
+      <form id="verdictForm">
+        <input id="verdictAnswer" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Imię i nazwisko winnego" />
+        <button type="submit">Oskarż</button>
+        <div class="error" id="verdictErr"></div>
+      </form>
+    </section>
   </div>
 
-  <div id="riddle">
-    <span class="eyebrow">Krok 2</span>
-    <h1>Gdybyś mogła poznać całą swoją przyszłość, zanim się wydarzy — czy chciałabyś to zrobić? Autor jednej z Twoich książek zadał sobie dokładnie to samo pytanie. Znajdź je w jego spisie treści — numer strony to Twoja kolejna wskazówka.</h1>
+  <div id="finalRiddle">
+    <span class="section-label">Rozwiązane</span>
+    <h2>Gdybyś mogła poznać całą swoją przyszłość, zanim się wydarzy — czy chciałabyś to zrobić? Autor jednej z Twoich książek zadał sobie dokładnie to samo pytanie. Znajdź je w jego spisie treści — numer strony to Twoja kolejna wskazówka.</h2>
   </div>
+
 </div>
 
 <script>
+  // Suspects: click cycles through neutral -> suspect -> cleared -> neutral (cosmetic only)
+  document.querySelectorAll(".suspect").forEach(function (card) {
+    card.addEventListener("click", function () {
+      var status = card.querySelector(".suspect-status");
+      if (card.classList.contains("marked-suspect")) {
+        card.classList.remove("marked-suspect");
+        card.classList.add("marked-cleared");
+        status.textContent = "Wykluczony";
+      } else if (card.classList.contains("marked-cleared")) {
+        card.classList.remove("marked-cleared");
+        status.textContent = "Brak oceny";
+      } else {
+        card.classList.add("marked-suspect");
+        status.textContent = "Główny podejrzany";
+      }
+    });
+  });
+
+  // Evidence: reveal one at a time
+  var evCards = document.querySelectorAll(".evidence-card");
+  var evShown = 0;
+  var revealBtn = document.getElementById("revealBtn");
+  var evCount = document.getElementById("evCount");
+  function revealNext() {
+    if (evShown < evCards.length) {
+      evCards[evShown].classList.add("show");
+      evShown++;
+      evCount.textContent = evShown;
+    }
+    if (evShown >= evCards.length) {
+      revealBtn.disabled = true;
+      revealBtn.textContent = "Wszystkie dowody odsłonięte";
+    }
+  }
+  revealBtn.addEventListener("click", revealNext);
+  revealNext(); // show first one immediately
+
+  // Verdict check
   function norm(s) {
     return s
       .toLowerCase()
@@ -194,15 +459,16 @@
       .replace(/[̀-ͯ]/g, "")
       .trim();
   }
-  var EXPECTED = "miod";
-  document.getElementById("gateForm").addEventListener("submit", function (e) {
+  var ACCEPTED = ["irena dorm", "irena", "dorm", "kustoszka"];
+  document.getElementById("verdictForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    var val = norm(document.getElementById("answer").value);
-    if (val === EXPECTED) {
-      document.getElementById("gate").classList.add("hide");
-      document.getElementById("riddle").classList.add("show");
+    var val = norm(document.getElementById("verdictAnswer").value);
+    if (ACCEPTED.indexOf(val) !== -1) {
+      document.getElementById("caseBody").classList.add("solved");
+      document.getElementById("finalRiddle").classList.add("show");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      document.getElementById("err").textContent = "To nie to. Spróbuj jeszcze raz.";
+      document.getElementById("verdictErr").textContent = "To nie ta osoba. Przeanalizuj dowody jeszcze raz.";
     }
   });
 </script>
